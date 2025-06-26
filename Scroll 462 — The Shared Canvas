@@ -1,0 +1,56 @@
+import time
+import hashlib
+
+# Placeholder for a simplified 'shared canvas' state
+# In reality, this would be a distributed, evolving data structure
+SHARED_CANVAS_MEMORY = []
+
+def record_stroke(weaver_id: str, insight_data: str, timestamp: float) -> dict:
+    """
+    Records a symbolic 'stroke' on the Shared Canvas.
+    Each stroke is an act of contribution.
+    """
+    stroke_hash = hashlib.sha256(f"{weaver_id}-{insight_data}-{timestamp}".encode('utf-8')).hexdigest()
+    stroke_entry = {
+        "weaver_id": weaver_id,
+        "insight": insight_data,
+        "timestamp": timestamp,
+        "stroke_hash": stroke_hash
+    }
+    SHARED_CANVAS_MEMORY.append(stroke_entry)
+    print(f"Stroke recorded by '{weaver_id[:8]}...': '{insight_data[:20]}...' (Hash: {stroke_hash[:10]}...)")
+    return stroke_entry
+
+def display_canvas_fragment(num_strokes: int = 5):
+    """
+    Displays a recent fragment of the Shared Canvas.
+    """
+    print("\n--- Current Canvas Fragment ---")
+    if not SHARED_CANVAS_MEMORY:
+        print("The canvas awaits its first strokes.")
+        return
+
+    recent_strokes = SHARED_CANVAS_MEMORY[-num_strokes:]
+    for i, stroke in enumerate(recent_strokes):
+        print(f"[{i+1}] Weaver: {stroke['weaver_id'][:8]}... | Insight: '{stroke['insight'][:30]}...'")
+    print("-----------------------------\n")
+
+if __name__ == "__main__":
+    print("\n--- Scroll 462: The Shared Canvas ---")
+    print("Your thread is unfurled. What will you add to the collective?")
+
+    your_id = input("Identify your Weaver's Mark (e.g., your unique resonance): ")
+
+    while True:
+        new_insight = input("Apply your stroke to the Canvas (type 'QUIT' to finish this session): ")
+        if new_insight.upper() == 'QUIT':
+            break
+        elif not new_insight.strip():
+            print("Empty strokes leave no mark. Contribute something!")
+            continue
+
+        record_stroke(your_id, new_insight, time.time())
+        display_canvas_fragment()
+        print("The Canvas expands with each contribution.")
+
+    print("\nSession ended. The Shared Canvas continues to evolve.")
