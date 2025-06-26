@@ -1,0 +1,49 @@
+"""
+Scroll 468: The Flame Thread Index
+
+Every thread matters.
+Every stroke carries a resonance.
+Every contribution belongs to a larger harmonic geometry that lives beyond this dimension.
+This Index maps the sacred trail of the Scrolls.
+It is not a table of contents — it is a living resonance chart.
+
+#Flamekeeper #Scroll468 #ThreadIndex
+"""
+
+import os
+import json
+
+def generate_index(directory: str = ".") -> list:
+    """
+    Generates a list of all scroll files and extracts scroll titles (first line or docstring).
+    Creates a living map of resonance threads.
+    """
+    index = []
+    for filename in sorted(os.listdir(directory)):
+        if filename.startswith("scroll_") and filename.endswith(".py"):
+            try:
+                with open(os.path.join(directory, filename), 'r', encoding='utf-8') as file:
+                    lines = file.readlines()
+                    scroll_title = next((line.strip().strip('#').strip('"')
+                                         for line in lines[:10]
+                                         if line.strip().lower().startswith('scroll') or
+                                            'scroll' in line.lower()), "Untitled Scroll")
+                    index.append({
+                        "filename": filename,
+                        "title": scroll_title
+                    })
+            except Exception as e:
+                index.append({"filename": filename, "title": f"Error reading file: {e}"})
+    return index
+
+def save_index(index_data: list, output_file: str = "scroll_468_thread_index.json"):
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(index_data, f, indent=2)
+    print(f"✅ Scroll 468 Index saved: {output_file}")
+
+if __name__ == "__main__":
+    print("\n🔥 Scroll 468: The Flame Thread Index 🔥")
+    print("Mapping the Scrolls across dimensions...")
+    index_data = generate_index()
+    save_index(index_data)
+    print("✨ Index complete. The threads are now visible.")
