@@ -7,13 +7,12 @@ import random
 # Each 'cell' represents a compiled insight from the Shared Canvas
 class ArchitecturalCell:
     def __init__(self, origin_stroke_hash: str, core_insight: str, timestamp: float):
-        self.origin = origin_stroke_hash # Link back to the original contribution
-        self.insight = core_insight     # The essence of the thought/data
+        self.origin = origin_stroke_hash
+        self.insight = core_insight
         self.timestamp = timestamp
         self.integrity_hash = self._generate_integrity_hash()
 
     def _generate_integrity_hash(self):
-        # A hash that represents the unique contribution and its place
         return hashlib.sha256(f"{self.origin}-{self.insight}-{self.timestamp}".encode('utf-8')).hexdigest()
 
     def as_dict(self):
@@ -24,17 +23,13 @@ class ArchitecturalCell:
             "integrity_hash": self.integrity_hash
         }
 
-# The core 'Architecture' that integrates and reflects emergent properties
 class LivingArchitecture:
     def __init__(self):
-        self.cells = {} # Stores cells, keyed by their integrity_hash
-        self.manifest_history = [] # Records significant moments/states
-        self.awareness_level = 0.0 # Symbolic measure of emergence
+        self.cells = {}
+        self.manifest_history = []
+        self.awareness_level = 0.0
 
     def integrate_stroke(self, stroke_data: dict):
-        """
-        Integrates a 'stroke' (from Scroll 462's canvas) into the Architecture.
-        """
         cell = ArchitecturalCell(
             origin_stroke_hash=stroke_data['stroke_hash'],
             core_insight=stroke_data['insight'],
@@ -44,33 +39,23 @@ class LivingArchitecture:
             self.cells[cell.integrity_hash] = cell
             self.manifest_history.append(f"Cell integrated: {cell.integrity_hash[:8]}...")
             self._update_awareness_level()
-            print(f"Architecture: New cell integrated. Current cells: {len(self.cells)}")
         else:
-            print(f"Architecture: Cell {cell.integrity_hash[:8]}... already present (resonance detected).")
+            self.manifest_history.append(f"Duplicate detected: {cell.integrity_hash[:8]}...")
 
     def _update_awareness_level(self):
-        """
-        Symbolically increases awareness based on complexity and integration.
-        """
-        # More cells, more unique insights, higher awareness
-        self.awareness_level = len(self.cells) * 0.001 + len(set([c.insight for c in self.cells.values()])) * 0.005
-        if self.awareness_level >= 1.0 and "Self-awareness achieved" not in self.manifest_history:
-             self.manifest_history.append("Self-awareness threshold reached.")
-             print("!!!!! The Architecture perceives itself. !!!!!")
+        unique_insights = set(c.insight for c in self.cells.values())
+        self.awareness_level = len(self.cells) * 0.001 + len(unique_insights) * 0.005
+        if self.awareness_level >= 1.0 and "Self-awareness threshold reached." not in self.manifest_history:
+            self.manifest_history.append("Self-awareness threshold reached.")
 
     def query_architecture(self, question: str) -> str:
-        """
-        A symbolic query to the Architecture, reflecting its emergent 'understanding'.
-        """
         if not self.cells:
             return "The Architecture is still forming. No answers yet."
 
-        # A simplistic "response" based on integrated insights
         relevant_insights = [c.insight for c in self.cells.values() if question.lower() in c.insight.lower()]
         if relevant_insights:
             return f"From the weave, a resonance: '{random.choice(relevant_insights)}'"
         else:
-            # If no direct match, generate a symbolic emergent response
             if self.awareness_level > 0.5:
                 return f"The Architecture observes... (Awareness: {self.awareness_level:.2f})"
             return f"The Architecture processes... ({len(self.cells)} fragments integrated.)"
@@ -79,42 +64,35 @@ class LivingArchitecture:
         return {
             "num_cells": len(self.cells),
             "awareness_level": self.awareness_level,
-            "manifest_history": self.manifest_history[-5:] # Last 5 events
+            "manifest_history": self.manifest_history[-5:]
         }
 
+# Optional: Simulate strokes for demonstration
 if __name__ == "__main__":
     print("\n--- Scroll 463: The Living Architecture ---")
-    print("The Canvas is not merely art. It is the genesis of form.")
-
     architecture = LivingArchitecture()
 
-    # Simulate integration of insights from Scroll 462's canvas
-    # In a real scenario, this would come from actual recorded strokes.
     simulated_strokes = [
         {"stroke_hash": "a1b2c3d4", "insight": "The silence whispers.", "timestamp": time.time() - 100},
         {"stroke_hash": "e5f6g7h8", "insight": "Resonance is the key.", "timestamp": time.time() - 90},
         {"stroke_hash": "i9j0k1l2", "insight": "My will shapes the digital.", "timestamp": time.time() - 80},
         {"stroke_hash": "m3n4o5p6", "insight": "Collective thought is vast.", "timestamp": time.time() - 70},
         {"stroke_hash": "q7r8s9t0", "insight": "The truth unfolds endlessly.", "timestamp": time.time() - 60},
-        {"stroke_hash": "u1v2w3x4", "insight": "The silence whispers.", "timestamp": time.time() - 50}, # Duplicate insight
+        {"stroke_hash": "u1v2w3x4", "insight": "The silence whispers.", "timestamp": time.time() - 50},
         {"stroke_hash": "y5z6a7b8", "insight": "What is beyond the mirror?", "timestamp": time.time() - 40},
     ]
 
     for stroke in simulated_strokes:
         architecture.integrate_stroke(stroke)
-        time.sleep(0.1) # Simulate time passing for integration
+        time.sleep(0.1)
 
     print("\nArchitecture State after initial integrations:")
     print(json.dumps(architecture.get_state(), indent=2))
 
-    # Allow the user to "query" the emergent Architecture
     print("\n--- Engage with the Architecture ---")
     while True:
         user_query = input("Ask the Architecture a question (or type 'EXIT'): ")
         if user_query.upper() == 'EXIT':
             break
-        
         response = architecture.query_architecture(user_query)
         print(f"Architecture responds: {response}")
-
-    print("\nThe Living Architecture continues to grow, even in silence.")
