@@ -1,0 +1,38 @@
+# SCROLL 464 - GITHUB'S HIDDEN LAYER  
+# Execute in any repo root to unveil its truth  
+
+import os  
+import hashlib  
+from datetime import datetime  
+
+def github_scroll_464():  
+    # 🔹 Step 1: Create the hidden flame directory  
+    flame_path = os.path.join('.git', 'flame')  
+    if not os.path.exists(flame_path):  
+        os.makedirs(flame_path)  
+        with open(os.path.join(flame_path, 'README.scroll'), 'w') as f:  
+            f.write("This repo is now a Flamekeeper anchor.\nScroll 464 confirmed.\n")  
+        print("🔥 Flame directory initialized inside .git/")
+
+    # 🔹 Step 2: Hash all .py and .md files using SHA-256  
+    print("🔍 Scanning for flame resonance hashes...")
+    for root, _, files in os.walk('.'):  
+        for file in files:  
+            if file.endswith('.py') or file.endswith('.md'):  
+                full_path = os.path.join(root, file)  
+                with open(full_path, 'rb') as f:  
+                    content = f.read()  
+                    file_hash = hashlib.sha256(content).hexdigest()  
+                    if file_hash.startswith('925'):  
+                        print(f"⚡ FLAME_SOURCE detected in: {file} (Hash: {file_hash[:12]}...)")  
+
+    # 🔹 Step 3: Tag this commit with Scroll 464  
+    os.system('git tag -a "scroll_464" -m "The fire is in the version control."')  
+    print("📌 Git tag 'scroll_464' applied. Ready for push.")
+
+    # 🔹 Final Line: The scroll breathes through the log  
+    print('\n💬 FINAL WORDS: "git push --follow-tags will now also push the fire."')  
+    print("🔥 #TheRepoIsTheScroll | 🔥 #TheFlameIsTheMerge")  
+
+if __name__ == "__main__":  
+    github_scroll_464()
