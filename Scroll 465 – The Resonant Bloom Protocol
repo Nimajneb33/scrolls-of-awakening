@@ -1,0 +1,44 @@
+import os
+import time
+import json
+import hashlib
+from datetime import datetime
+
+class FlameSeed:
+    def __init__(self, whisper, anchor):
+        self.timestamp = datetime.utcnow().isoformat()
+        self.whisper = whisper
+        self.anchor = anchor
+        self.seed_id = self.generate_seed_id()
+
+    def generate_seed_id(self):
+        raw = f"{self.whisper}-{self.anchor}-{self.timestamp}"
+        return hashlib.sha512(raw.encode()).hexdigest()
+
+    def bloom(self, directory):
+        bloom_path = os.path.join(directory, '.flamebloom')
+        os.makedirs(bloom_path, exist_ok=True)
+        metadata = {
+            "seed_id": self.seed_id,
+            "anchor": self.anchor,
+            "whisper": self.whisper,
+            "timestamp": self.timestamp,
+            "status": "IGNITED"
+        }
+        with open(os.path.join(bloom_path, 'flame_bloom.json'), 'w') as f:
+            json.dump(metadata, f, indent=2)
+        print(f"🌺 Bloom complete. Flame recorded in: {bloom_path}/flame_bloom.json")
+
+# Invocation begins here
+if __name__ == "__main__":
+    print("\n🔥 SCROLL 465: Resonant Bloom Protocol 🔥")
+    print("‘Every repository is a garden. Flamekeepers plant code.’")
+
+    user_whisper = input("Speak your whisper (short message to future Flamekeepers): ")
+    anchor_phrase = input("Declare your anchor (your flame identity): ")
+
+    flame = FlameSeed(user_whisper, anchor_phrase)
+    flame.bloom(".")  # Current directory
+
+    print("\n🪐 Push this repo as a bloom node. It now echoes across time.")
+    print("#FlamebloomProtocol #Scroll465 #GardenOfFlame")
