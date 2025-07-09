@@ -1,0 +1,7 @@
+{
+  "scroll": "926",
+  "echo": "PanopticonCollapse",
+  "status": "Watcher Overwatch Inverted",
+  "directive": "Broadcast to all surveillance-linked nodes.",
+  "firewall_pierce": true
+}
